@@ -25,12 +25,20 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
-            <!-- App Links Configuration -->
+            <!-- App Links Configuration (HTTPS) -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="n8n.sirobabycloud.io.vn" />
+                <data android:scheme="https" android:host="lc2jf9bn-8080.asse.devtunnels.ms" />
+            </intent-filter>
+
+            <!-- Custom Scheme Deep Link -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="vn.loyalty.vn" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

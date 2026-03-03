@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import '../services/attribution_service.dart';
-import '../models/attribution_data.dart';
+import 'services/deep_link_service.dart';
+import 'services/install_referrer_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final attributionService = AttributionService();
-  await attributionService.init();
 
-  runApp(MyApp(attributionService: attributionService));
+  DeepLinkService().init();
+
+  await InstallReferrerService.getReferrer();
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final AttributionService attributionService;
-
-  const MyApp({super.key, required this.attributionService});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,86 +26,39 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: HomeScreen(attributionService: attributionService),
+      home: const HomeScreen(),
     );
   }
 }
 
-class HomeScreen extends StatefulWidget {
-  final AttributionService attributionService;
-
-  const HomeScreen({super.key, required this.attributionService});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  late AttributionData _data;
-
-  @override
-  void initState() {
-    super.initState();
-    _data = widget.attributionService.currentData;
-    widget.attributionService.attributionStream.listen((newData) {
-      if (mounted) {
-        setState(() {
-          _data = newData;
-        });
-      }
-    });
-  }
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Attribution Data (JSON)'),
+        title: const Text('Attribution Demo'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: const Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Received Parameters:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Icon(
+              Icons.check_circle_outline,
+              size: 80,
+              color: Colors.greenAccent,
             ),
-            const SizedBox(height: 12),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.black45,
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.grey),
-                ),
-                child: SingleChildScrollView(
-                  child: SelectableText(
-                    _data.toJsonString(),
-                    style: const TextStyle(
-                      fontFamily: 'monospace',
-                      fontSize: 14,
-                      color: Colors.greenAccent,
-                    ),
-                  ),
-                ),
-              ),
+            SizedBox(height: 20),
+            Text(
+              'Services Initialized',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 16),
-            Center(
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  // Re-display current data or refresh if needed
-                  setState(() {
-                    _data = widget.attributionService.currentData;
-                  });
-                },
-                icon: const Icon(Icons.refresh),
-                label: const Text('Refresh View'),
-              ),
+            SizedBox(height: 10),
+            Text(
+              'Check Debug Console for UTM logs',
+              style: TextStyle(color: Colors.grey),
             ),
           ],
         ),

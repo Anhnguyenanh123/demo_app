@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "vn.loyalty.vn",
+      "sha256_cert_fingerprints": [
+        "8D:1E:10:F5:D5:E2:23:D8:5C:9A:F0:14:1D:B1:84:2D:57:7B:A3:7C:F7:A2:4A:B0:8E:56:24:26:C4:08:48:35"
+      ]
+    }
+  }
+]
