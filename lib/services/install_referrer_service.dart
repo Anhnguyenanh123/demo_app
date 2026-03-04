@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -5,6 +6,13 @@ class InstallReferrerService {
   static const platform = MethodChannel('install_referrer_channel');
 
   static Future<Map<String, String?>> getReferrer() async {
+    if (!Platform.isAndroid) {
+      return {
+        'type': 'NEW USER (Install Referrer)',
+        'utm_source': 'N/A',
+        'utm_campaign': 'N/A',
+      };
+    }
     try {
       final referrer = await platform.invokeMethod<String>(
         'getInstallReferrer',
